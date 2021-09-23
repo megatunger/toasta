@@ -1,43 +1,15 @@
 library toasta;
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:toasta/provider.dart';
 import 'package:toasta/toast_element.dart';
 
-import 'model/model.dart';
+import 'model.dart';
 
-enum ToastStatus {
-  failed,
-  warning,
-  success,
-  info,
-}
-
-class ToastaProvider extends InheritedWidget {
-  ToastaProvider({Key? key, required Widget child})
-      : super(key: key, child: child);
-
-  Toast? currentToasting;
-  List<Toast> toastQueues = [];
-
-  void toast(
-      {required ToastStatus status,
-      String? title,
-      String? subtitle,
-      VoidCallback? onTap}) {
-    print("sdffs");
-    Toast element = Toast(title: title, subtitle: subtitle, onTap: onTap);
-  }
-
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    return false;
-    throw UnimplementedError();
-  }
-
-  static ToastaProvider? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<ToastaProvider>();
-  }
-}
+export 'enum.dart';
+export 'model.dart';
 
 class ToastaContainer extends StatefulWidget {
   const ToastaContainer({Key? key, required this.child}) : super(key: key);
@@ -50,14 +22,33 @@ class ToastaContainer extends StatefulWidget {
 class _ToastaContainerState extends State<ToastaContainer> {
   @override
   Widget build(BuildContext context) {
-    return ToastaProvider(
-      child: Container(
-        child: Stack(children: [
-          if (ToastaProvider.of(context)?.currentToasting != null)
-            ToastElement(element: ToastaProvider.of(context)!.currentToasting!),
-          widget.child
-        ]),
+    return ChangeNotifierProvider<ToastaProvider>(
+      create: (context) => ToastaProvider(),
+      child: Consumer<ToastaProvider>(
+        builder: (context, _toastaProvider, child) {
+          Widget toastElement = Container();
+          if (_toastaProvider.currentToasting != null) {
+            toastElement =
+                ToastElement(element: _toastaProvider.currentToasting!);
+          }
+          return MaterialApp(
+              home: Container(
+            child: Stack(children: [widget.child, toastElement]),
+          ));
+        },
       ),
     );
+  }
+}
+
+class Toasta {
+  final BuildContext context;
+
+  Toasta(this.context);
+
+  toast(Toast toast) {
+    ToastaProvider toastaProvider =
+        Provider.of<ToastaProvider>(context, listen: false);
+    toastaProvider.toast(toast);
   }
 }
