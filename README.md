@@ -8,7 +8,7 @@ Simple, Smooth & Elegant toast libary for Flutter on all Platform. Inspired by i
 
 Web Demo:
 
-<a href="https://megatunger.com/toasta" rel="">![Demo](https://github.com/megatunger/toasta/blob/master/demo/web.gif?raw=true)</a>
+<a href="https://megatunger.com/toasta" rel="">![Demo](https://github.com/megatunger/toasta/blob/master/demo/web.png?raw=true)</a>
 
 ## How to use
 
