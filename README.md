@@ -1,6 +1,7 @@
 # Toasta
 
-Simple, Smooth & Elegant toast libary for Flutter on all Platform. Inspired by iOS
+Simple, Smooth & Elegant toast libary for Flutter on all Platform. Inspired by iOS. 
+<a href="https://github.com/megatunger/toasta" rel="" target="_blank">Github Repo</a>
 
 | iOS                        | Android                                                  |
 | -------------------------- | ------------------------------------------------------------ |
