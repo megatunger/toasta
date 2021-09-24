@@ -6,6 +6,10 @@ Simple, Smooth & Elegant toast libary for Flutter on all Platform. Inspired by i
 | -------------------------- | ------------------------------------------------------------ |
 | ![](https://github.com/megatunger/toasta/blob/master/demo/ios.gif?raw=true) | ![](https://github.com/megatunger/toasta/blob/master/demo/android.gif?raw=true) |
 
+Web Demo:
+
+<a href="https://megatunger.com/toasta" rel="">![Demo](https://github.com/megatunger/toasta/blob/master/demo/web.png?raw=true)</a>
+
 ## How to use
 
 Step 1: Add to pubspec.yaml
