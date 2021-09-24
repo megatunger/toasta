@@ -9,7 +9,7 @@ Simple, Smooth & Elegant toast libary for Flutter on all Platform. Inspired by i
 
 <a href="https://megatunger.com/toasta" rel="" target="_blank">![Demo](https://github.com/megatunger/toasta/blob/master/demo/web.png?raw=true)</a>
 
-<a href="https://megatunger.com/toasta" rel="" target="_blank" style="text-align: center; font-size: 14px">Web Demo</a>
+<h1 align="center"><a href="https://megatunger.com/toasta" rel="" target="_blank">Web Demo</a></h2>
 
 ## How to use
 
