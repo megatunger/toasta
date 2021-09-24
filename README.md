@@ -6,7 +6,7 @@ Simple, Smooth & Elegant toast libary for Flutter on all Platform. Inspired by i
 | -------------------------- | ------------------------------------------------------------ |
 | ![](https://github.com/megatunger/toasta/blob/master/demo/ios.gif?raw=true) | ![](https://github.com/megatunger/toasta/blob/master/demo/android.gif?raw=true) |
 
-<a href="https://megatunger.com/toasta" rel="" target="_blank">Web Demo:</a>
+<a href="https://megatunger.com/toasta" rel="" target="_blank">Web Demo</a>
 
 <a href="https://megatunger.com/toasta" rel="" target="_blank">![Demo](https://github.com/megatunger/toasta/blob/master/demo/web.png?raw=true)</a>
 
