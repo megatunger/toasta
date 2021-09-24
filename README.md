@@ -2,6 +2,10 @@
 
 Simple, Smooth & Elegant toast libary for Flutter on all Platform. Inspired by iOS
 
+| iOS                        | Android                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| ![](https://github.com/megatunger/toasta/blob/master/demo/ios.gif?raw=true) | ![](https://github.com/megatunger/toasta/blob/master/demo/android.gif?raw=true) |
+
 ## How to use
 
 Step 1: Add to pubspec.yaml
