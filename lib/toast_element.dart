@@ -140,7 +140,7 @@ class _ToastElementState extends State<ToastElement>
                     child: SizedBox(
                       width: widget.element.width != null
                           ? widget.element.width!
-                          : MediaQuery.of(context).size.width * 0.5,
+                          : MediaQuery.of(context).size.width * 0.7,
                       height: widget.element.height != null
                           ? widget.element.height!
                           : 56,
