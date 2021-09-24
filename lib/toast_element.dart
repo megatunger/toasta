@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
@@ -96,6 +97,7 @@ class _ToastElementState extends State<ToastElement>
           alignment: FractionalOffset.topCenter,
           child: SafeArea(
             child: Container(
+              margin: kIsWeb ? const EdgeInsets.only(top: 16) : null,
               decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(
                     Radius.circular(25.0),
@@ -140,31 +142,29 @@ class _ToastElementState extends State<ToastElement>
                     child: SizedBox(
                       width: widget.element.width != null
                           ? widget.element.width!
-                          : MediaQuery.of(context).size.width * 0.7,
+                          : MediaQuery.of(context).size.width > 640
+                              ? MediaQuery.of(context).size.width * 0.4
+                              : MediaQuery.of(context).size.width * 0.7,
                       height: widget.element.height != null
                           ? widget.element.height!
                           : 56,
-                      child: Stack(
+                      child: Row(
                         children: [
-                          Row(
-                            children: [
-                              if (widget.element.leading != null)
-                                widget.element.leading!,
-                              ...toastStatus(),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    toastTitle(),
-                                    ...toastSubtitle(),
-                                  ],
-                                ),
-                              ),
-                              if (widget.element.trailing != null)
-                                widget.element.trailing!,
-                            ],
-                          )
+                          if (widget.element.leading != null)
+                            widget.element.leading!,
+                          ...toastStatus(),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                toastTitle(),
+                                ...toastSubtitle(),
+                              ],
+                            ),
+                          ),
+                          if (widget.element.trailing != null)
+                            widget.element.trailing!,
                         ],
                       ),
                     ),
