@@ -6,6 +6,7 @@ import 'enum.dart';
 class Toast {
   double? height;
   double? width;
+  BorderRadiusGeometry? borderRadius;
   bool? darkMode;
   bool? fadeInSubtitle;
   dynamic title;
@@ -20,7 +21,10 @@ class Toast {
   Duration? duration;
 
   Toast(
-      {this.title,
+      {this.width,
+      this.height,
+      this.borderRadius,
+      this.title,
       this.subtitle,
       this.leading,
       this.trailing,

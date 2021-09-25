@@ -56,12 +56,13 @@ Toasta(context).toast(toast);
 | subtitle `String` `Widget` | The lower part of toast, you can passing both String or Widget to customize | null                 |
 | leading `Widget`           | Customize leading part of toast                              | null                 |
 | trailing `Widget`          | Customize trailing part of toast                             | null                 |
-| onTap                      | Callback on tap Toast                                        | null                 |
-| onAppear                   | Callback after appeared Toast                                | null                 |
-| onExit                     | Callback after disappeared Toast                             | null                 |
-| status                     | You can passing ToastStatus `success` `failed` `warning` `info` | null                 |
-| backgroundColor            | Customize background color                                   | null                 |
-| duration                   | Duration of toast                                            | Duration(seconds: 3) |
+| onTap    `Function`        | Callback on tap Toast                                        | null                 |
+| onAppear    `Function`     | Callback after appeared Toast                                | null                 |
+| onExit     `Function`      | Callback after disappeared Toast                             | null                 |
+| status    `Enum`           | You can passing ToastStatus `success` `failed` `warning` `info` | null                 |
+| backgroundColor `Color`    | Customize background color                                   | null                 |
+| duration      `Duration`   | Duration of toast                                            | Duration(seconds: 3) |
+| borderRadius  `BorderRadius`   | Border Radius of toast                                            | BorderRadius.all(Radius.circular(25.0)) |
 
 ## Support
 

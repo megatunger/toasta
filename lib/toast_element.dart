@@ -99,9 +99,11 @@ class _ToastElementState extends State<ToastElement>
             child: Container(
               margin: kIsWeb ? const EdgeInsets.only(top: 16) : null,
               decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(25.0),
-                  ),
+                  borderRadius: widget.element.borderRadius != null
+                      ? widget.element.borderRadius!
+                      : const BorderRadius.all(
+                          Radius.circular(25.0),
+                        ),
                   boxShadow: widget.element.darkMode == true
                       ? []
                       : [
