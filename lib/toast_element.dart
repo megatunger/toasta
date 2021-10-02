@@ -121,7 +121,7 @@ class _ToastElementState extends State<ToastElement>
                   print(details.localPosition);
                   print(details.globalPosition);
 
-                  _fadeController.value -= details.delta.dy / 56;
+                  _startController.value -= details.delta.dy / 56;
                   // int sensitivity = 8;
                   // if (details.delta.dy > sensitivity) {
                   // } else if (details.delta.dy < -sensitivity) {
