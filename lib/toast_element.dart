@@ -32,7 +32,7 @@ class _ToastElementState extends State<ToastElement>
     CurvedAnimation(
       parent: _startController,
       curve: Curves.easeOutQuint,
-      reverseCurve: Curves.easeOutQuint,
+      reverseCurve: Curves.easeIn,
     ),
   );
   late final AnimationController _scaleController = AnimationController(
