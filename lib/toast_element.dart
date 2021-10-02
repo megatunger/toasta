@@ -84,6 +84,7 @@ class _ToastElementState extends State<ToastElement>
   void dispose() {
     _startController.dispose();
     _scaleController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
@@ -99,98 +100,89 @@ class _ToastElementState extends State<ToastElement>
           child: SafeArea(
             child: Container(
               margin: kIsWeb ? const EdgeInsets.only(top: 16) : null,
-              decoration: BoxDecoration(
-                  borderRadius: widget.element.borderRadius != null
-                      ? widget.element.borderRadius!
-                      : const BorderRadius.all(
-                          Radius.circular(25.0),
+              child: widget.element.custom ??
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: widget.element.borderRadius != null
+                            ? widget.element.borderRadius!
+                            : const BorderRadius.all(
+                                Radius.circular(25.0),
+                              ),
+                        boxShadow: widget.element.darkMode == true
+                            ? []
+                            : [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.13),
+                                  spreadRadius: 3,
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 9),
+                                )
+                              ]),
+                    child: GestureDetector(
+                      onVerticalDragUpdate: (details) {
+                        _startController.value += details.delta.dy / 56;
+                      },
+                      onVerticalDragEnd: (dragEndDetail) {
+                        if (_startController.value < 0.5 ||
+                            dragEndDetail.velocity.pixelsPerSecond.dy < -8) {
+                          disappearTimer.cancel();
+                          disappear();
+                        } else {
+                          _startController.forward();
+                        }
+                      },
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          primary: widget.element.darkMode == true
+                              ? Colors.grey
+                              : Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32.0),
+                          ),
                         ),
-                  boxShadow: widget.element.darkMode == true
-                      ? []
-                      : [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.13),
-                            spreadRadius: 3,
-                            blurRadius: 20,
-                            offset: const Offset(0, 9),
-                          )
-                        ]),
-              child: GestureDetector(
-                onVerticalDragUpdate: (details) {
-                  print("TOASTA");
-                  print(details.delta);
-                  print(details.localPosition);
-                  print(details.globalPosition);
-
-                  // int sensitivity = 8;
-                  // if (details.delta.dy > sensitivity) {
-                  // } else if (details.delta.dy < -sensitivity) {
-                  //   disappearTimer.cancel();
-                  //   disappear();
-                  //   return;
-                  // }
-
-                  _startController.value += details.delta.dy / 56;
-                },
-                onVerticalDragEnd: (dragEndDetail) {
-                  if (_startController.value < 0.5 ||
-                      dragEndDetail.velocity.pixelsPerSecond.dy < -8) {
-                    disappearTimer.cancel();
-                    disappear();
-                  } else {
-                    _startController.forward();
-                  }
-                },
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    primary: widget.element.darkMode == true
-                        ? Colors.grey
-                        : Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (widget.element.onTap != null) {
-                      widget.element.onTap!();
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 6),
-                    child: SizedBox(
-                      width: widget.element.width != null
-                          ? widget.element.width!
-                          : MediaQuery.of(context).size.width > 640
-                              ? MediaQuery.of(context).size.width * 0.4
-                              : MediaQuery.of(context).size.width * 0.7,
-                      height: widget.element.height != null
-                          ? widget.element.height!
-                          : 56,
-                      child: Row(
-                        children: [
-                          if (widget.element.leading != null)
-                            widget.element.leading!,
-                          ...toastStatus(),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                        onPressed: () {
+                          if (widget.element.onTap != null) {
+                            widget.element.onTap!();
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 6),
+                          child: SizedBox(
+                            width: widget.element.width != null
+                                ? widget.element.width!
+                                : MediaQuery.of(context).size.width > 640
+                                    ? MediaQuery.of(context).size.width * 0.4
+                                    : MediaQuery.of(context).size.width * 0.7,
+                            height: widget.element.height != null
+                                ? widget.element.height!
+                                : 56,
+                            child: Row(
                               children: [
-                                toastTitle(),
-                                ...toastSubtitle(),
+                                if (widget.element.leading != null)
+                                  widget.element.leading!,
+                                ...toastStatus(),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      toastTitle(),
+                                      ...toastSubtitle(),
+                                    ],
+                                  ),
+                                ),
+                                if (widget.element.trailing != null)
+                                  widget.element.trailing!,
                               ],
                             ),
                           ),
-                          if (widget.element.trailing != null)
-                            widget.element.trailing!,
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
             ),
           ),
         ),

@@ -19,21 +19,24 @@ class Toast {
   ToastStatus? status;
   Color? backgroundColor;
   Duration? duration;
+  Widget? custom;
 
-  Toast(
-      {this.width,
-      this.height,
-      this.borderRadius,
-      this.title,
-      this.subtitle,
-      this.leading,
-      this.trailing,
-      this.fadeInSubtitle,
-      this.onTap,
-      this.onAppear,
-      this.onExit,
-      this.darkMode,
-      this.backgroundColor,
-      this.status,
-      this.duration});
+  Toast({
+    this.width,
+    this.height,
+    this.borderRadius,
+    this.title,
+    this.subtitle,
+    this.leading,
+    this.trailing,
+    this.fadeInSubtitle,
+    this.onTap,
+    this.onAppear,
+    this.onExit,
+    this.darkMode,
+    this.backgroundColor,
+    this.status,
+    this.duration,
+    this.custom,
+  });
 }
