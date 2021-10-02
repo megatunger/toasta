@@ -44,6 +44,9 @@ class _ToastElementState extends State<ToastElement>
     curve: Curves.easeOutQuint,
   );
   late Timer disappearTimer;
+
+  late double dragDeltaY = 0;
+
   @override
   void initState() {
     _startController.forward().then((_) {
@@ -121,9 +124,14 @@ class _ToastElementState extends State<ToastElement>
                     child: GestureDetector(
                       onVerticalDragUpdate: (details) {
                         disappearTimer.cancel();
-                        _startController.value += details.delta.dy / 56;
+
+                        dragDeltaY += details.delta.dy;
+
+                        _startController.value = dragDeltaY / 56;
                       },
                       onVerticalDragEnd: (dragEndDetail) {
+                        dragDeltaY = 0;
+
                         disappearTimer = Timer(
                             widget.element.duration != null
                                 ? widget.element.duration!
