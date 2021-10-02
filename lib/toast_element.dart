@@ -136,7 +136,7 @@ class _ToastElementState extends State<ToastElement>
                         print(dragDeltaY / 56);
 
                         _startController.value =
-                            (1 - (dragDeltaY / 56)).clamp(0.0, 1.0);
+                            (1 + (dragDeltaY / 56)).clamp(0.0, 1.0);
                       },
                       onVerticalDragEnd: (dragEndDetail) {
                         dragDeltaY = 0;
