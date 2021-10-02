@@ -125,6 +125,10 @@ class _ToastElementState extends State<ToastElement>
                       onVerticalDragUpdate: (details) {
                         disappearTimer.cancel();
 
+                        if (details.delta.dx < -8) {
+                          return;
+                        }
+
                         dragDeltaY += details.delta.dy;
 
                         print(dragDeltaY);
