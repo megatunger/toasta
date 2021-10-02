@@ -32,6 +32,7 @@ class _ToastElementState extends State<ToastElement>
     CurvedAnimation(
       parent: _startController,
       curve: Curves.easeOutQuint,
+      reverseCurve: Curves.easeOutQuint,
     ),
   );
   late final AnimationController _scaleController = AnimationController(
@@ -121,7 +122,7 @@ class _ToastElementState extends State<ToastElement>
                   print(details.localPosition);
                   print(details.globalPosition);
 
-                  _startController.value += details.delta.dy / 56;
+                  _startController.value += details.delta.dy / 56 / 2;
                   // int sensitivity = 8;
                   // if (details.delta.dy > sensitivity) {
                   // } else if (details.delta.dy < -sensitivity) {
