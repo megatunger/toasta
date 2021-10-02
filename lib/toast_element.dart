@@ -124,6 +124,7 @@ class _ToastElementState extends State<ToastElement>
                     child: GestureDetector(
                       onVerticalDragUpdate: (details) {
                         disappearTimer.cancel();
+                        print("onVerticalDragUpdate");
                         print(details.delta.dy);
                         if (details.delta.dy < -8) {
                           return;
@@ -138,6 +139,8 @@ class _ToastElementState extends State<ToastElement>
                       },
                       onVerticalDragEnd: (dragEndDetail) {
                         dragDeltaY = 0;
+                        print("dragEndDetail");
+                        print(dragEndDetail.velocity.pixelsPerSecond.dy);
 
                         disappearTimer = Timer(
                             widget.element.duration != null
