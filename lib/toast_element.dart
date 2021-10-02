@@ -124,8 +124,8 @@ class _ToastElementState extends State<ToastElement>
                     child: GestureDetector(
                       onVerticalDragUpdate: (details) {
                         disappearTimer.cancel();
-
-                        if (details.delta.dx < -8) {
+                        print(details.delta.dy);
+                        if (details.delta.dy < -8) {
                           return;
                         }
 
