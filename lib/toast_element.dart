@@ -116,12 +116,16 @@ class _ToastElementState extends State<ToastElement>
                         ]),
               child: GestureDetector(
                 onVerticalDragUpdate: (details) {
-                  int sensitivity = 8;
-                  if (details.delta.dy > sensitivity) {
-                  } else if (details.delta.dy < -sensitivity) {
-                    disappearTimer.cancel();
-                    disappear();
-                  }
+                  print("TOASTA");
+                  print(details.delta);
+                  print(details.localPosition);
+                  print(details.globalPosition);
+                  // int sensitivity = 8;
+                  // if (details.delta.dy > sensitivity) {
+                  // } else if (details.delta.dy < -sensitivity) {
+                  //   disappearTimer.cancel();
+                  //   disappear();
+                  // }
                 },
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
