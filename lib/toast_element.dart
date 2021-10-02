@@ -130,6 +130,14 @@ class _ToastElementState extends State<ToastElement>
                   //   disappear();
                   // }
                 },
+                onVerticalDragEnd: (_) {
+                  if (_startController.value < 0.5) {
+                    disappearTimer.cancel();
+                    disappear();
+                  } else {
+                    _startController.forward();
+                  }
+                },
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
