@@ -32,7 +32,7 @@ class _ToastElementState extends State<ToastElement>
     CurvedAnimation(
       parent: _startController,
       curve: Curves.easeOutQuint,
-      reverseCurve: Curves.fastLinearToSlowEaseIn,
+      reverseCurve: Curves.easeOut,
     ),
   );
   late final AnimationController _scaleController = AnimationController(
@@ -130,7 +130,7 @@ class _ToastElementState extends State<ToastElement>
                           return;
                         }
 
-                        dragDeltaY += details.delta.dy;
+                        dragDeltaY += details.delta.dy * 0.75;
 
                         print(dragDeltaY);
                         print(dragDeltaY / 56);
