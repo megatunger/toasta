@@ -122,7 +122,7 @@ class _ToastElementState extends State<ToastElement>
                   print(details.localPosition);
                   print(details.globalPosition);
 
-                  _startController.value += details.delta.dy / 56 / 2;
+                  _startController.value += details.delta.dy / 56;
                   // int sensitivity = 8;
                   // if (details.delta.dy > sensitivity) {
                   // } else if (details.delta.dy < -sensitivity) {
@@ -130,7 +130,7 @@ class _ToastElementState extends State<ToastElement>
                   //   disappear();
                   // }
                 },
-                onVerticalDragEnd: (_) {
+                onVerticalDragEnd: (dragEndDetail) {
                   if (_startController.value < 0.5) {
                     disappearTimer.cancel();
                     disappear();
