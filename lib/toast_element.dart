@@ -103,9 +103,9 @@ class _ToastElementState extends State<ToastElement>
           child: SafeArea(
             child: Container(
               margin: kIsWeb ? const EdgeInsets.only(top: 16) : null,
-              child: widget.element.custom ??
-                  Container(
-                    decoration: BoxDecoration(
+              child: Container(
+                decoration: widget.element.custom == null
+                    ? BoxDecoration(
                         borderRadius: widget.element.borderRadius != null
                             ? widget.element.borderRadius!
                             : const BorderRadius.all(
@@ -120,45 +120,47 @@ class _ToastElementState extends State<ToastElement>
                                   blurRadius: 20,
                                   offset: const Offset(0, 9),
                                 )
-                              ]),
-                    child: GestureDetector(
-                      onVerticalDragUpdate: (details) {
-                        disappearTimer.cancel();
-                        print("onVerticalDragUpdate");
-                        print(details.delta.dy);
-                        if (details.delta.dy < -8) {
-                          return;
-                        }
+                              ])
+                    : null,
+                child: GestureDetector(
+                  onVerticalDragUpdate: (details) {
+                    disappearTimer.cancel();
+                    print("onVerticalDragUpdate");
+                    print(details.delta.dy);
+                    if (details.delta.dy < -8) {
+                      return;
+                    }
 
-                        dragDeltaY += details.delta.dy * 0.75;
+                    dragDeltaY += details.delta.dy * 0.75;
 
-                        print(dragDeltaY);
-                        print(dragDeltaY / 56);
+                    print(dragDeltaY);
+                    print(dragDeltaY / 56);
 
-                        _startController.value =
-                            (1 + (dragDeltaY / 56)).clamp(0.0, 1.0);
-                      },
-                      onVerticalDragEnd: (dragEndDetail) {
-                        dragDeltaY = 0;
-                        print("dragEndDetail");
-                        print(dragEndDetail.velocity.pixelsPerSecond.dy);
+                    _startController.value =
+                        (1 + (dragDeltaY / 56)).clamp(0.0, 1.0);
+                  },
+                  onVerticalDragEnd: (dragEndDetail) {
+                    dragDeltaY = 0;
+                    print("dragEndDetail");
+                    print(dragEndDetail.velocity.pixelsPerSecond.dy);
 
-                        disappearTimer = Timer(
-                            widget.element.duration != null
-                                ? widget.element.duration!
-                                : const Duration(seconds: 3), () {
-                          disappear();
-                        });
+                    disappearTimer = Timer(
+                        widget.element.duration != null
+                            ? widget.element.duration!
+                            : const Duration(seconds: 3), () {
+                      disappear();
+                    });
 
-                        if (_startController.value < 0.5 ||
-                            dragEndDetail.velocity.pixelsPerSecond.dy < -8) {
-                          disappearTimer.cancel();
-                          disappear();
-                        } else {
-                          _startController.forward();
-                        }
-                      },
-                      child: ElevatedButton(
+                    if (_startController.value < 0.5 ||
+                        dragEndDetail.velocity.pixelsPerSecond.dy < -8) {
+                      disappearTimer.cancel();
+                      disappear();
+                    } else {
+                      _startController.forward();
+                    }
+                  },
+                  child: widget.element.custom ??
+                      ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           primary: widget.element.darkMode == true
@@ -208,8 +210,8 @@ class _ToastElementState extends State<ToastElement>
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                ),
+              ),
             ),
           ),
         ),
