@@ -122,18 +122,19 @@ class _ToastElementState extends State<ToastElement>
                   print(details.localPosition);
                   print(details.globalPosition);
 
-                  int sensitivity = 8;
-                  if (details.delta.dy > sensitivity) {
-                  } else if (details.delta.dy < -sensitivity) {
-                    disappearTimer.cancel();
-                    disappear();
-                    return;
-                  }
+                  // int sensitivity = 8;
+                  // if (details.delta.dy > sensitivity) {
+                  // } else if (details.delta.dy < -sensitivity) {
+                  //   disappearTimer.cancel();
+                  //   disappear();
+                  //   return;
+                  // }
 
                   _startController.value += details.delta.dy / 56;
                 },
                 onVerticalDragEnd: (dragEndDetail) {
-                  if (_startController.value < 0.5) {
+                  if (_startController.value < 0.5 ||
+                      dragEndDetail.velocity.pixelsPerSecond.dy < -8) {
                     disappearTimer.cancel();
                     disappear();
                   } else {
