@@ -120,9 +120,17 @@ class _ToastElementState extends State<ToastElement>
                               ]),
                     child: GestureDetector(
                       onVerticalDragUpdate: (details) {
+                        disappearTimer.cancel();
                         _startController.value += details.delta.dy / 56;
                       },
                       onVerticalDragEnd: (dragEndDetail) {
+                        disappearTimer = Timer(
+                            widget.element.duration != null
+                                ? widget.element.duration!
+                                : const Duration(seconds: 3), () {
+                          disappear();
+                        });
+
                         if (_startController.value < 0.5 ||
                             dragEndDetail.velocity.pixelsPerSecond.dy < -8) {
                           disappearTimer.cancel();
