@@ -32,6 +32,7 @@ class _ToastElementState extends State<ToastElement>
     CurvedAnimation(
       parent: _startController,
       curve: Curves.easeOutQuint,
+      reverseCurve: Curves.easeOut,
     ),
   );
   late final AnimationController _scaleController = AnimationController(
@@ -43,6 +44,9 @@ class _ToastElementState extends State<ToastElement>
     curve: Curves.easeOutQuint,
   );
   late Timer disappearTimer;
+
+  late double dragDeltaY = 0;
+
   @override
   void initState() {
     _startController.forward().then((_) {
@@ -83,6 +87,7 @@ class _ToastElementState extends State<ToastElement>
   void dispose() {
     _startController.dispose();
     _scaleController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
@@ -98,79 +103,106 @@ class _ToastElementState extends State<ToastElement>
           child: SafeArea(
             child: Container(
               margin: kIsWeb ? const EdgeInsets.only(top: 16) : null,
-              decoration: BoxDecoration(
-                  borderRadius: widget.element.borderRadius != null
-                      ? widget.element.borderRadius!
-                      : const BorderRadius.all(
-                          Radius.circular(25.0),
-                        ),
-                  boxShadow: widget.element.darkMode == true
-                      ? []
-                      : [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.13),
-                            spreadRadius: 3,
-                            blurRadius: 20,
-                            offset: const Offset(0, 9),
-                          )
-                        ]),
-              child: GestureDetector(
-                onVerticalDragUpdate: (details) {
-                  int sensitivity = 8;
-                  if (details.delta.dy > sensitivity) {
-                  } else if (details.delta.dy < -sensitivity) {
+              child: Container(
+                decoration: widget.element.custom == null
+                    ? BoxDecoration(
+                        borderRadius: widget.element.borderRadius != null
+                            ? widget.element.borderRadius!
+                            : const BorderRadius.all(
+                                Radius.circular(25.0),
+                              ),
+                        boxShadow: widget.element.darkMode == true
+                            ? []
+                            : [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.13),
+                                  spreadRadius: 3,
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 9),
+                                )
+                              ])
+                    : null,
+                child: GestureDetector(
+                  onVerticalDragUpdate: (details) {
                     disappearTimer.cancel();
-                    disappear();
-                  }
-                },
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    primary: widget.element.darkMode == true
-                        ? Colors.grey
-                        : Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (widget.element.onTap != null) {
-                      widget.element.onTap!();
+                    if (details.delta.dy < -8) {
+                      return;
+                    }
+
+                    dragDeltaY += details.delta.dy * 0.75;
+
+                    _startController.value =
+                        (1 + (dragDeltaY / 56)).clamp(0.0, 1.0);
+                  },
+                  onVerticalDragEnd: (dragEndDetail) {
+                    dragDeltaY = 0;
+
+                    disappearTimer = Timer(
+                        widget.element.duration != null
+                            ? widget.element.duration!
+                            : const Duration(seconds: 3), () {
+                      disappear();
+                    });
+
+                    if (_startController.value < 0.5 ||
+                        dragEndDetail.velocity.pixelsPerSecond.dy < -8) {
+                      disappearTimer.cancel();
+                      disappear();
+                    } else {
+                      _startController.forward();
                     }
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 6),
-                    child: SizedBox(
-                      width: widget.element.width != null
-                          ? widget.element.width!
-                          : MediaQuery.of(context).size.width > 640
-                              ? MediaQuery.of(context).size.width * 0.4
-                              : MediaQuery.of(context).size.width * 0.7,
-                      height: widget.element.height != null
-                          ? widget.element.height!
-                          : 56,
-                      child: Row(
-                        children: [
-                          if (widget.element.leading != null)
-                            widget.element.leading!,
-                          ...toastStatus(),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                  child: widget.element.custom ??
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          primary: widget.element.darkMode == true
+                              ? Colors.grey
+                              : Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (widget.element.onTap != null) {
+                            widget.element.onTap!();
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 6),
+                          child: SizedBox(
+                            width: widget.element.width != null
+                                ? widget.element.width!
+                                : MediaQuery.of(context).size.width > 640
+                                    ? MediaQuery.of(context).size.width * 0.4
+                                    : MediaQuery.of(context).size.width * 0.7,
+                            height: widget.element.height != null
+                                ? widget.element.height!
+                                : 56,
+                            child: Row(
                               children: [
-                                toastTitle(),
-                                ...toastSubtitle(),
+                                if (widget.element.leading != null)
+                                  widget.element.leading!,
+                                ...toastStatus(),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      toastTitle(),
+                                      ...toastSubtitle(),
+                                    ],
+                                  ),
+                                ),
+                                if (widget.element.trailing != null)
+                                  widget.element.trailing!,
                               ],
                             ),
                           ),
-                          if (widget.element.trailing != null)
-                            widget.element.trailing!,
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
                 ),
               ),
             ),
