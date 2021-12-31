@@ -1,6 +1,6 @@
 name: toasta
 description: Elegant Toast UI for Flutter Apps, inspired from iOS. Toasta had smooth animation & easily to customize
-version: 1.0.3
+version: 1.0.4
 homepage: https://megatunger.com/toasta
 
 environment:

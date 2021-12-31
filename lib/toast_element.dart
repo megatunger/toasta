@@ -98,89 +98,92 @@ class _ToastElementState extends State<ToastElement>
         child: Align(
           alignment: FractionalOffset.topCenter,
           child: SafeArea(
-            child: ClipRRect(
-              borderRadius: widget.element.borderRadius != null
-                  ? widget.element.borderRadius!
-                  : const BorderRadius.all(
-                      Radius.circular(25.0 + 7.0),
-                    ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-                child: Container(
-                  color: Colors.transparent,
+            child: Container(
+              margin: kIsWeb ? const EdgeInsets.only(top: 16) : null,
+              child: ClipRRect(
+                borderRadius: widget.element.borderRadius != null
+                    ? widget.element.borderRadius!
+                    : const BorderRadius.all(
+                        Radius.circular(25.0 + 7.0),
+                      ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
                   child: Container(
-                    margin: kIsWeb ? const EdgeInsets.only(top: 16) : null,
-                    decoration: BoxDecoration(
-                        borderRadius: widget.element.borderRadius != null
-                            ? widget.element.borderRadius!
-                            : const BorderRadius.all(
-                                Radius.circular(25.0),
-                              ),
-                        boxShadow: widget.element.darkMode == true
-                            ? []
-                            : [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.13),
-                                  spreadRadius: 3,
-                                  blurRadius: 20,
-                                  offset: const Offset(0, 9),
-                                )
-                              ]),
-                    child: GestureDetector(
-                      onVerticalDragUpdate: (details) {
-                        int sensitivity = 8;
-                        if (details.delta.dy > sensitivity) {
-                        } else if (details.delta.dy < -sensitivity) {
-                          disappearTimer.cancel();
-                          disappear();
-                        }
-                      },
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          primary: widget.element.darkMode == true
-                              ? Colors.grey.withOpacity(0.5)
-                              : Colors.white.withOpacity(0.9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (widget.element.onTap != null) {
-                            widget.element.onTap!();
+                    color: Colors.transparent,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: widget.element.borderRadius != null
+                              ? widget.element.borderRadius!
+                              : const BorderRadius.all(
+                                  Radius.circular(25.0),
+                                ),
+                          boxShadow: widget.element.darkMode == true
+                              ? []
+                              : [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.13),
+                                    spreadRadius: 3,
+                                    blurRadius: 20,
+                                    offset: const Offset(0, 9),
+                                  )
+                                ]),
+                      child: GestureDetector(
+                        onVerticalDragUpdate: (details) {
+                          int sensitivity = 8;
+                          if (details.delta.dy > sensitivity) {
+                          } else if (details.delta.dy < -sensitivity) {
+                            disappearTimer.cancel();
+                            disappear();
                           }
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 6),
-                          child: SizedBox(
-                            width: widget.element.width != null
-                                ? widget.element.width!
-                                : MediaQuery.of(context).size.width > 640
-                                    ? MediaQuery.of(context).size.width * 0.4
-                                    : MediaQuery.of(context).size.width * 0.7,
-                            height: widget.element.height != null
-                                ? widget.element.height!
-                                : 56,
-                            child: Row(
-                              children: [
-                                if (widget.element.leading != null)
-                                  widget.element.leading!,
-                                ...toastStatus(),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      toastTitle(),
-                                      ...toastSubtitle(),
-                                    ],
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            primary: widget.element.darkMode == true
+                                ? Colors.grey.withOpacity(0.5)
+                                : Colors.white.withOpacity(0.9),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32.0),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (widget.element.onTap != null) {
+                              widget.element.onTap!();
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 6),
+                            child: SizedBox(
+                              width: widget.element.width != null
+                                  ? widget.element.width!
+                                  : MediaQuery.of(context).size.width > 640
+                                      ? MediaQuery.of(context).size.width * 0.4
+                                      : MediaQuery.of(context).size.width * 0.7,
+                              height: widget.element.height != null
+                                  ? widget.element.height!
+                                  : 56,
+                              child: Row(
+                                children: [
+                                  if (widget.element.leading != null)
+                                    widget.element.leading!,
+                                  ...toastStatus(),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        toastTitle(),
+                                        ...toastSubtitle(),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                if (widget.element.trailing != null)
-                                  widget.element.trailing!,
-                              ],
+                                  if (widget.element.trailing != null)
+                                    widget.element.trailing!,
+                                ],
+                              ),
                             ),
                           ),
                         ),

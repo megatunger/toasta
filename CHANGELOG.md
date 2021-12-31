@@ -9,3 +9,5 @@
 - Replace solid background with blur feels like iOS
 - Change drag zone threshold
 - Downgrade provider dependency for more compatible
+### 1.0.4
+- Fix incorrect shadow position on Web
