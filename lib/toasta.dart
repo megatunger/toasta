@@ -31,7 +31,9 @@ class _ToastaContainerState extends State<ToastaContainer> {
             toastElement =
                 ToastElement(element: _toastaProvider.currentToasting!);
           }
-          return Stack(children: [widget.child, toastElement]);
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: Stack(children: [widget.child, toastElement]));
         },
       ),
     );

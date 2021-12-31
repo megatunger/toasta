@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class ToastElement extends StatefulWidget {
 
 class _ToastElementState extends State<ToastElement>
     with TickerProviderStateMixin {
+  static const blur = 32.0;
   late final AnimationController _startController = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 350),
@@ -32,7 +34,6 @@ class _ToastElementState extends State<ToastElement>
     CurvedAnimation(
       parent: _startController,
       curve: Curves.easeOutQuint,
-      reverseCurve: Curves.easeOut,
     ),
   );
   late final AnimationController _scaleController = AnimationController(
@@ -44,9 +45,6 @@ class _ToastElementState extends State<ToastElement>
     curve: Curves.easeOutQuint,
   );
   late Timer disappearTimer;
-
-  late double dragDeltaY = 0;
-
   @override
   void initState() {
     _startController.forward().then((_) {
@@ -87,7 +85,6 @@ class _ToastElementState extends State<ToastElement>
   void dispose() {
     _startController.dispose();
     _scaleController.dispose();
-    _fadeController.dispose();
     super.dispose();
   }
 
@@ -101,11 +98,19 @@ class _ToastElementState extends State<ToastElement>
         child: Align(
           alignment: FractionalOffset.topCenter,
           child: SafeArea(
-            child: Container(
-              margin: kIsWeb ? const EdgeInsets.only(top: 16) : null,
-              child: Container(
-                decoration: widget.element.custom == null
-                    ? BoxDecoration(
+            child: ClipRRect(
+              borderRadius: widget.element.borderRadius != null
+                  ? widget.element.borderRadius!
+                  : const BorderRadius.all(
+                      Radius.circular(25.0 + 7.0),
+                    ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+                child: Container(
+                  color: Colors.transparent,
+                  child: Container(
+                    margin: kIsWeb ? const EdgeInsets.only(top: 16) : null,
+                    decoration: BoxDecoration(
                         borderRadius: widget.element.borderRadius != null
                             ? widget.element.borderRadius!
                             : const BorderRadius.all(
@@ -120,45 +125,22 @@ class _ToastElementState extends State<ToastElement>
                                   blurRadius: 20,
                                   offset: const Offset(0, 9),
                                 )
-                              ])
-                    : null,
-                child: GestureDetector(
-                  onVerticalDragUpdate: (details) {
-                    disappearTimer.cancel();
-                    if (details.delta.dy < -8) {
-                      return;
-                    }
-
-                    dragDeltaY += details.delta.dy * 0.75;
-
-                    _startController.value =
-                        (1 + (dragDeltaY / 56)).clamp(0.0, 1.0);
-                  },
-                  onVerticalDragEnd: (dragEndDetail) {
-                    dragDeltaY = 0;
-
-                    disappearTimer = Timer(
-                        widget.element.duration != null
-                            ? widget.element.duration!
-                            : const Duration(seconds: 3), () {
-                      disappear();
-                    });
-
-                    if (_startController.value < 0.5 ||
-                        dragEndDetail.velocity.pixelsPerSecond.dy < -8) {
-                      disappearTimer.cancel();
-                      disappear();
-                    } else {
-                      _startController.forward();
-                    }
-                  },
-                  child: widget.element.custom ??
-                      ElevatedButton(
+                              ]),
+                    child: GestureDetector(
+                      onVerticalDragUpdate: (details) {
+                        int sensitivity = 8;
+                        if (details.delta.dy > sensitivity) {
+                        } else if (details.delta.dy < -sensitivity) {
+                          disappearTimer.cancel();
+                          disappear();
+                        }
+                      },
+                      child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           primary: widget.element.darkMode == true
-                              ? Colors.grey
-                              : Colors.white,
+                              ? Colors.grey.withOpacity(0.5)
+                              : Colors.white.withOpacity(0.9),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32.0),
                           ),
@@ -203,6 +185,8 @@ class _ToastElementState extends State<ToastElement>
                           ),
                         ),
                       ),
+                    ),
+                  ),
                 ),
               ),
             ),
